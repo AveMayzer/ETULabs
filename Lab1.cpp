@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <windows.h>
 
 using namespace std;
 
@@ -369,7 +370,7 @@ void printStudentsByPlaceNumber(Student* students, int& cntStudents) {
 
 int main() {
     setlocale(0, "");
-
+    SetConsoleCP(1251);
     Student students[999];
     int cntStudents = countStudents();
     loadStudentsFromFile(students, cntStudents); 
