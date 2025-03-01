@@ -99,6 +99,10 @@ void createNewStudent(Student* students, int& cntStudents) { // Добавить
     getline(cin, students[cntStudents].name);
     cout << "Пол (М/Ж)" << endl;
     cin >> students[cntStudents].sex;
+    if (students[cntStudents].sex != "М" && students[cntStudents].sex != "Ж") {
+        cout << "Пол может быть только М/Ж!" << endl;
+        return;
+    }
     cout << "Группа" << endl;
     cin >> students[cntStudents].group;
     cout << "Его номер места в группе" << endl;
@@ -107,11 +111,19 @@ void createNewStudent(Student* students, int& cntStudents) { // Добавить
 
     for (int i = 0; i < 5; i++) {
         cin >> students[cntStudents].testGrades[i];
+        if ((students[cntStudents].testGrades[i] < 3) || (students[cntStudents].testGrades[i] > 5)) {
+            cout << "Оценка должна быть от 3 до 5!";
+            return;
+        }
     }
 
     cout << "Его оценки за экзамен (3 оценки)" << endl;
     for (int i = 0; i < 3; i++) {
         cin >> students[cntStudents].examGrades[i];
+        if ((students[cntStudents].examGrades[i] < 3) || (students[cntStudents].examGrades[i] > 5)) {
+            cout << "Оценка должна быть от 3 до 5!";
+            return;
+        }
     }
 
     file << students[cntStudents].name << "\n";
@@ -321,6 +333,10 @@ void editStudent(Student* students, int& cntStudents) {
             getline(cin, students[index].name); break;
         case 2: cout << "Введите пол (М/Ж)" << endl;
             cin >> searchName;
+            if (searchName != "М" && searchName != "Ж") {
+                cout << "Пол может быть только М/Ж!" << endl;
+                return;
+            }
             students[index].sex = searchName; break;
         case 3: cout << "Введите новую группу" << endl;
             cin >> choiceNum;
@@ -331,12 +347,20 @@ void editStudent(Student* students, int& cntStudents) {
         case 5: cout << "Введите новые оценки за дифф. зачёты" << endl;
             for (int i = 0; i < 5; i++) {
                 cin >> choiceNum;
+                if (choiceNum < 3 || choiceNum > 5) {
+                    cout << "Оценки должны быть от 3 до 5!";
+                    return;
+                }
                 students[index].testGrades[i] = choiceNum;
             }
             break;
         case 6: cout << "Введите новые оценки за экзамены" << endl;
             for (int i = 0; i < 3; i++) {
                 cin >> choiceNum;
+                if (choiceNum < 3 || choiceNum > 5) {
+                    cout << "Оценки должны быть от 3 до 5!";
+                    return;
+                }
                 students[index].examGrades[i] = choiceNum;
             }
             break;
