@@ -8,12 +8,16 @@ using namespace std;
 struct Student {
     string name;
     string sex;
-    float avg;
     unsigned short int group;
     unsigned short int placeInGroup;
     unsigned short int testGrades[5];
     unsigned short int examGrades[3];
     
+};
+
+struct Average {
+    Student* student;
+    float avg;
 };
 
 void printStudentFromStruct(Student* students, int num) {
@@ -223,8 +227,8 @@ void printStudentsWithIncreasedScholarship(Student* students, int& cntStudents) 
     }
 }
 
-int averageGrade(Student* students, int i) {
-    int avg = 0;
+float averageGrade(Student* students, int i) {
+    float avg = 0;
 
     for (int j = 0; j < 5; j++) {
         avg += students[i].testGrades[j];
@@ -238,41 +242,29 @@ int averageGrade(Student* students, int i) {
 }
 
 void printTopStudents(Student* students, int& cntStudents) {
-    Student topStudents[999];
+    Average averages[999];
 
-    for (int i = 0; i < cntStudents; i++) { // Заполнение нового массива структуры со средним баллом, чтобы не менять местами старую структуру
-        topStudents[i] = students[i];
-        float avg = 0;
-        for (int j = 0; j < 5; j++) {
-            avg += students[i].testGrades[j];
-        }
-
-        for (int j = 0; j < 3; j++) {
-            avg += students[i].examGrades[j];
-        }
-
-        topStudents[i].avg = avg / 8;
+    for (int i = 0; i < cntStudents; i++) {
+        averages[i].student = &students[i];
+        averages[i].avg = averageGrade(students, i);
     }
 
-    for (int i = 0; i < cntStudents; i++) { // Сортировка студентов по ср. баллу
+    for (int i = 0; i < cntStudents; i++) {
         for (int j = 0; j < cntStudents - i - 1; j++) {
-
-            if (topStudents[j + 1].avg > topStudents[j].avg) {
-                swap(topStudents[j + 1], topStudents[j]);
+            if (averages[j + 1].avg > averages[j].avg) {
+                swap(averages[j + 1], averages[j]);
             }
         }
     }
-
-    cout << "Топ 5 студентов по среднему баллу" << endl;
+    cout << "Топ 5 лучших студентов по среднему баллу: " << endl;
 
     for (int i = 0; i < cntStudents && i < 5; i++) {
-        cout << "ФИО: " << topStudents[i].name << endl;
-        cout << "Группа: " << topStudents[i].group << endl;
-        cout << "Ср. балл: " << topStudents[i].avg << endl;
+        cout << "ФИО: " << averages[i].student->name << endl; 
+        cout << "Группа: " << averages[i].student->group << endl;
+        cout << "Средний балл: " << averages[i].avg << endl;
         cout << endl;
     }
     cout << endl;
-
 }
 
 void saveAllStudentsToFile(Student* students, int& cntStudents) { // Перезапись студентов в файл.
@@ -367,6 +359,7 @@ void printStudentsByPlaceNumber(Student* students, int& cntStudents) {
     }
 
 }
+
 
 int main() {
     setlocale(0, "");
